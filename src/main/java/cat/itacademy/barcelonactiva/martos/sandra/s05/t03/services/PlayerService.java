@@ -15,5 +15,7 @@ public interface PlayerService {
     public GameDTO addGame(Integer idPlayer);
     public List<GameDTO> getAllGames(Integer idPlayer);
     public void deleteAllGames(Integer idPlayer);
-    public List<PlayerDTO> getSuccessRate();
+    public List<PlayerDTO> getAllSuccessRate();
+    public PlayerDTO getWinner();
+    public PlayerDTO getLoser();
 }

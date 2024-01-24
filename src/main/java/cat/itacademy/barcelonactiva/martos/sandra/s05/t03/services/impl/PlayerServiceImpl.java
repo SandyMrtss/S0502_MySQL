@@ -10,9 +10,7 @@ import cat.itacademy.barcelonactiva.martos.sandra.s05.t03.services.PlayerService
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class PlayerServiceImpl implements PlayerService {
@@ -69,11 +67,29 @@ public class PlayerServiceImpl implements PlayerService {
         return playerRepository.findAll();
     }
     @Override
-    public List<PlayerDTO> getSuccessRate() {
+    public List<PlayerDTO> getAllSuccessRate() {
         List<PlayerEntity> playerEntityList = getAllPlayers();
         List<PlayerDTO> playerDTOList = new ArrayList<>();
         playerEntityList.forEach(p-> playerDTOList.add(new PlayerDTO(p.getUsername(), gameService.getSuccessRate(p))));
         return playerDTOList;
+    }
+
+    @Override
+    public PlayerDTO getWinner() {
+        List<PlayerDTO> playerDTOList = getAllSuccessRate();
+        return playerDTOList
+                .stream()
+                .max(Comparator.comparing(PlayerDTO::getSuccessRate))
+                .orElseThrow(NoSuchElementException::new);
+    }
+
+    @Override
+    public PlayerDTO getLoser() {
+        List<PlayerDTO> playerDTOList = getAllSuccessRate();
+        return playerDTOList
+                .stream()
+                .min(Comparator.comparing(PlayerDTO::getSuccessRate))
+                .orElseThrow(NoSuchElementException::new);
     }
 
     private PlayerDTO playerToDTO(PlayerEntity playerEntity){
