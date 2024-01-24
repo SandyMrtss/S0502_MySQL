@@ -53,7 +53,7 @@ public class Controller {
     @GetMapping("/players/ranking")
     public ResponseEntity<List<PlayerDTO>> getAverageRate(){
         List<PlayerDTO> playerDTOList = playerService.getAllSuccessRate();
-        return new ResponseEntity<>(playerDTOList, HttpStatus.OK);
+        return new ResponseEntity <>(playerDTOList, HttpStatus.OK);
     }
 
     @GetMapping("/players/ranking/loser")
