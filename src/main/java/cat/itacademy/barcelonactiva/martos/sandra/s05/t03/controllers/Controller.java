@@ -65,5 +65,6 @@ public class Controller {
     @GetMapping("/players/ranking/winner")
     public ResponseEntity<PlayerDTO> getWinner(){
         PlayerDTO winner = playerService.getWinner();
-        return new ResponseEntity<>(winner, HttpStatus.OK);    }
+        return new ResponseEntity<>(winner, HttpStatus.OK);
+    }
 }
