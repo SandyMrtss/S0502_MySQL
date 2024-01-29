@@ -15,10 +15,8 @@ import org.mockito.*;
 import org.mockito.internal.matchers.apachecommons.ReflectionEquals;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -53,29 +51,33 @@ public class GameServiceImplTest {
     void testGameDTOToEntity(){
         GameDTO game = new GameDTO(RandomDiceGenerator.newRandomDice(), RandomDiceGenerator.newRandomDice());
         GameEntity gameEntity = gameService.gameDTOToEntity(playerEntity, game);
-
         assertTrue(game.getDice1() == gameEntity.getDice1()
                 && game.getDice2() == gameEntity.getDice2()
                 && gameEntity.getPlayerEntity().equals(playerEntity));
     }
 
-//    @Test
-//    @DisplayName("New game creation")
-//    void testAddGame(){
-//
-//        GameDTO newGame = gameService.addGame(playerEntity);
-//        GameEntity newGameEntity = gameService.gameDTOToEntity(playerEntity, newGame);
-//
-//        assertTrue(gameService.getAllGames(playerEntity).contains(newGame));
-//    }
-//    Mockito.when(cityRepository.find(expected.getId()))
-//            .thenReturn(Optional.of(expected));
-//    City actual = cityService.find(expected.getId());
-//    ReflectionAssert.assertReflectionEquals(expected, actual);
-//    void delete() throws Exception {
-//        City expected = createCity();
-//        cityService.delete(expected);
-//        Mockito.verify(cityRepository).delete(expected);
+    @Test
+    @DisplayName("GameEntity to GameDTO works")
+    void testGameEntityToDTO(){
+        GameEntity gameEntity = new GameEntity(playerEntity, 3,2);
+        GameDTO  gameDTO = gameService.gameEntityToDTO(gameEntity);
+        assertTrue(gameDTO.getDice1() == gameEntity.getDice1()
+                && gameDTO.getDice2() == gameEntity.getDice2()
+                && !gameDTO.isWin());
+    }
+
+    @Test
+    @DisplayName("New game creation")
+    void testAddGame(){
+        GameDTO newGame = gameService.addGame(playerEntity);
+        listGameEntity.add(gameService.gameDTOToEntity(playerEntity, newGame));
+
+        Mockito.when(gameRepository.findByPlayerEntity(playerEntity)).thenReturn(listGameEntity);
+
+        List<GameDTO> actualList = gameService.getAllGames(playerEntity);
+        assertTrue(new ReflectionEquals(listGameEntity).matches(actualList));
+    }
+
     @Test
     @DisplayName("List all games for player")
     void testGetAllGames(){
