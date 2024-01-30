@@ -18,4 +18,7 @@ public interface PlayerService {
     public List<PlayerDTO> getAllSuccessRate();
     public PlayerDTO getWinner();
     public PlayerDTO getLoser();
+
+    public PlayerDTO playerToDTO(PlayerEntity playerEntity);
+    public PlayerEntity playerDTOToEntity(PlayerDTORequest playerDTORequest);
 }

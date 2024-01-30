@@ -5,7 +5,6 @@ import cat.itacademy.barcelonactiva.martos.sandra.s05.t03.model.domain.PlayerEnt
 import cat.itacademy.barcelonactiva.martos.sandra.s05.t03.model.dto.GameDTO;
 import cat.itacademy.barcelonactiva.martos.sandra.s05.t03.repository.GameRepository;
 import cat.itacademy.barcelonactiva.martos.sandra.s05.t03.services.GameService;
-import cat.itacademy.barcelonactiva.martos.sandra.s05.t03.services.PlayerService;
 import cat.itacademy.barcelonactiva.martos.sandra.s05.t03.utils.RandomDiceGenerator;
 import org.springframework.stereotype.Service;
 
@@ -53,10 +52,12 @@ public class GameServiceImpl implements GameService {
         return success;
     }
 
-    private GameEntity gameDTOToEntity(PlayerEntity playerEntity, GameDTO gameDTO){
+    @Override
+    public GameEntity gameDTOToEntity(PlayerEntity playerEntity, GameDTO gameDTO){
         return new GameEntity(playerEntity, gameDTO.getDice1(), gameDTO.getDice2());
     }
-    private GameDTO gameEntityToDTO(GameEntity gameEntity){
+    @Override
+    public GameDTO gameEntityToDTO(GameEntity gameEntity){
         return new GameDTO(gameEntity.getDice1(), gameEntity.getDice2());
     }
 }

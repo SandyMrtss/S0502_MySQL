@@ -53,7 +53,7 @@ public class Controller {
     @GetMapping("/players/ranking")
     public ResponseEntity<List<PlayerDTO>> getAverageRate(){
         List<PlayerDTO> playerDTOList = playerService.getAllSuccessRate();
-        return new ResponseEntity<>(playerDTOList, HttpStatus.OK);
+        return new ResponseEntity <>(playerDTOList, HttpStatus.OK);
     }
 
     @GetMapping("/players/ranking/loser")
@@ -65,5 +65,6 @@ public class Controller {
     @GetMapping("/players/ranking/winner")
     public ResponseEntity<PlayerDTO> getWinner(){
         PlayerDTO winner = playerService.getWinner();
-        return new ResponseEntity<>(winner, HttpStatus.OK);    }
+        return new ResponseEntity<>(winner, HttpStatus.OK);
+    }
 }

@@ -1,5 +1,6 @@
 package cat.itacademy.barcelonactiva.martos.sandra.s05.t03.services;
 
+import cat.itacademy.barcelonactiva.martos.sandra.s05.t03.model.domain.GameEntity;
 import cat.itacademy.barcelonactiva.martos.sandra.s05.t03.model.domain.PlayerEntity;
 import cat.itacademy.barcelonactiva.martos.sandra.s05.t03.model.dto.GameDTO;
 
@@ -10,4 +11,6 @@ public interface GameService {
     public List<GameDTO> getAllGames(PlayerEntity playerEntity);
     public void deleteAllGames(PlayerEntity playerEntity);
     public double getSuccessRate(PlayerEntity playerEntity);
+    public GameEntity gameDTOToEntity(PlayerEntity playerEntity, GameDTO gameDTO);
+    public GameDTO gameEntityToDTO(GameEntity gameEntity);
 }
