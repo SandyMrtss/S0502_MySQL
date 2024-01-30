@@ -13,7 +13,7 @@ public class PlayerDTO {
     private double successRate;
 
     public PlayerDTO(String username, double successRate) {
-        this.username = Objects.requireNonNullElse(username, "ANONYMUS");
+        this.username = Objects.requireNonNullElse(username, "ANONYMOUS");
         this.successRate = successRate;
     }
 
