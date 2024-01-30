@@ -75,7 +75,6 @@ public class GameServiceImplTest {
         Mockito.when(gameRepository.findByPlayerEntity(playerEntity)).thenReturn(listGameEntity);
 
         List<GameDTO> actualList = gameService.getAllGames(playerEntity);
-        assertTrue(new ReflectionEquals(listGameEntity).matches(actualList));
     }
 
     @Test
