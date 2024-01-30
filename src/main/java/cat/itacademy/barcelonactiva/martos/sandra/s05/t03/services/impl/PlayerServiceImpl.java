@@ -92,12 +92,14 @@ public class PlayerServiceImpl implements PlayerService {
                 .orElseThrow(NoSuchElementException::new);
     }
 
-    private PlayerDTO playerToDTO(PlayerEntity playerEntity){
+    @Override
+    public PlayerDTO playerToDTO(PlayerEntity playerEntity){
         double successRate = gameService.getSuccessRate(playerEntity);
         return new PlayerDTO(playerEntity.getUsername(), successRate);
     }
 
-    private PlayerEntity playerDTOToEntity(PlayerDTORequest playerDTORequest){
+    @Override
+    public PlayerEntity playerDTOToEntity(PlayerDTORequest playerDTORequest){
         return new PlayerEntity(playerDTORequest.getUsername());
     }
 }
