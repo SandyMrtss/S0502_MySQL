@@ -12,16 +12,25 @@ import org.springframework.web.servlet.resource.NoResourceFoundException;
 import org.springframework.web.util.BindErrorUtils;
 
 @ControllerAdvice
-public class ExceptionHandlerAdvice {@ExceptionHandler(MethodArgumentNotValidException.class)
-@ResponseStatus(HttpStatus.BAD_REQUEST)
-public ResponseEntity<String> handleValidationException(MethodArgumentNotValidException ex){
-    return ResponseEntity.badRequest().body("Input not valid\n" + BindErrorUtils.resolveAndJoin(ex.getFieldErrors()));
-}
+public class ExceptionHandlerAdvice {
 
-    @ExceptionHandler(EntityNotFoundException.class)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<String> handleValidationException(MethodArgumentNotValidException ex){
+
+        return ResponseEntity.badRequest().body("Input not valid\n" + BindErrorUtils.resolveAndJoin(ex.getFieldErrors()));
+    }
+
+    @ExceptionHandler(PlayerNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ResponseEntity<String> handleNotFoundException(EntityNotFoundException ex){
+    public ResponseEntity<String> handleNotFoundException(PlayerNotFoundException ex){
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No user found with this id");
+    }
+
+    @ExceptionHandler(NoGamesPlayedException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseEntity<String> handleNoGamesPlayedException(NoGamesPlayedException ex){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No games have been played yet");
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
