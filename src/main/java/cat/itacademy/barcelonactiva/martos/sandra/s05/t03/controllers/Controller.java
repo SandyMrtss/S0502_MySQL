@@ -12,7 +12,7 @@ import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:9000")
 @RestController
-@RequestMapping("/diceGame/v1")
+@RequestMapping("/diceGame/v1/players")
 public class Controller {
     private PlayerService playerService;
 
@@ -20,49 +20,54 @@ public class Controller {
         this.playerService = playerService;
     }
 
-    @PostMapping("/players")
+    @PostMapping("")
     public ResponseEntity<String> newPlayer(@RequestBody PlayerDTORequest playerDTORequest){
         playerService.addPlayer(playerDTORequest);
         return new ResponseEntity<>("Player added successfully", HttpStatus.OK);
     }
+    @GetMapping("")
+    public ResponseEntity<List<PlayerDTO>> getAllSuccessRate(){
+        List<PlayerDTO> playerDTOList = playerService.getAllSuccessRate();
+        return new ResponseEntity<>(playerDTOList, HttpStatus.OK);
+    }
 
-    @PutMapping("/players/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<String> updatePlayer(@PathVariable("id") Integer id, PlayerDTORequest playerDTORequest){
         playerService.updatePlayer(id, playerDTORequest);
         return new ResponseEntity<>("Player updated successfully", HttpStatus.OK);
     }
 
-    @PostMapping("/players/{id}/games")
+    @PostMapping("/{id}/games")
     public ResponseEntity<GameDTO> play(@PathVariable("id") Integer id){
         GameDTO newGame = playerService.addGame(id);
         return new ResponseEntity<>(newGame, HttpStatus.OK);
     }
 
-    @DeleteMapping("/players/{id}/games")
+    @DeleteMapping("/{id}/games")
     public ResponseEntity<String> deleteAllGames(@PathVariable("id") Integer id){
         playerService.deleteAllGames(id);
         return new ResponseEntity<>("All games deleted successfully", HttpStatus.OK);
     }
 
-    @GetMapping("/players/{id}/games")
+    @GetMapping("/{id}/games")
     public ResponseEntity<List<GameDTO>> getAllGames(@PathVariable("id") Integer id){
         List<GameDTO> allGames = playerService.getAllGames(id);
         return new ResponseEntity<>(allGames, HttpStatus.OK);
     }
 
-    @GetMapping("/players/ranking")
+    @GetMapping("/ranking")
     public ResponseEntity<List<PlayerDTO>> getAverageRate(){
         List<PlayerDTO> playerDTOList = playerService.getAllSuccessRate();
         return new ResponseEntity <>(playerDTOList, HttpStatus.OK);
     }
 
-    @GetMapping("/players/ranking/loser")
+    @GetMapping("/ranking/loser")
     public ResponseEntity<PlayerDTO> getLoser(){
         PlayerDTO loser = playerService.getLoser();
         return new ResponseEntity<>(loser, HttpStatus.OK);
     }
 
-    @GetMapping("/players/ranking/winner")
+    @GetMapping("/ranking/winner")
     public ResponseEntity<PlayerDTO> getWinner(){
         PlayerDTO winner = playerService.getWinner();
         return new ResponseEntity<>(winner, HttpStatus.OK);
