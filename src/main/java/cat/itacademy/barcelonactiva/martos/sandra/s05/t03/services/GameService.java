@@ -9,5 +9,4 @@ public interface GameService {
     public GameDTO addGame(PlayerEntity playerEntity);
     public List<GameDTO> getAllGames(PlayerEntity playerEntity);
     public void deleteAllGames(PlayerEntity playerEntity);
-    public double getSuccessRate(PlayerEntity playerEntity);
 }

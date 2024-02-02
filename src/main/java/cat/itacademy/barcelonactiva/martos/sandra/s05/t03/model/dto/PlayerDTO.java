@@ -10,9 +10,9 @@ import java.util.Objects;
 public class PlayerDTO {
     private String username;
 
-    private double successRate;
+    private Double successRate;
 
-    public PlayerDTO(String username, double successRate) {
+    public PlayerDTO(String username, Double successRate) {
         this.username = Objects.requireNonNullElse(username, "ANONYMUS");
         this.successRate = successRate;
     }

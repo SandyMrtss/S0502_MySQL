@@ -39,7 +39,7 @@ public class Controller {
 
     @PostMapping("/{id}/games")
     public ResponseEntity<GameDTO> play(@PathVariable("id") Integer id){
-        GameDTO newGame = playerService.addGame(id);
+        GameDTO newGame = playerService.playGame(id);
         return new ResponseEntity<>(newGame, HttpStatus.OK);
     }
 
@@ -56,9 +56,9 @@ public class Controller {
     }
 
     @GetMapping("/ranking")
-    public ResponseEntity<List<PlayerDTO>> getAverageRate(){
-        List<PlayerDTO> playerDTOList = playerService.getAllSuccessRate();
-        return new ResponseEntity <>(playerDTOList, HttpStatus.OK);
+    public ResponseEntity<Double> getAverageRate(){
+        double avgSuccess = playerService.getAverageSuccessRate();
+        return new ResponseEntity <>(avgSuccess, HttpStatus.OK);
     }
 
     @GetMapping("/ranking/loser")

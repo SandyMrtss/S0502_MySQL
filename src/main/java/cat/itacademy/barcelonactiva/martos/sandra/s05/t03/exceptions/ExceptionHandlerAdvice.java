@@ -1,27 +1,36 @@
 package cat.itacademy.barcelonactiva.martos.sandra.s05.t03.exceptions;
 
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConversionException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 import org.springframework.web.util.BindErrorUtils;
 
 @ControllerAdvice
-public class ExceptionHandlerAdvice {@ExceptionHandler(MethodArgumentNotValidException.class)
-@ResponseStatus(HttpStatus.BAD_REQUEST)
-public ResponseEntity<String> handleValidationException(MethodArgumentNotValidException ex){
-    return ResponseEntity.badRequest().body("Input not valid\n" + BindErrorUtils.resolveAndJoin(ex.getFieldErrors()));
-}
+public class ExceptionHandlerAdvice {
 
-    @ExceptionHandler(EntityNotFoundException.class)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<String> handleValidationException(MethodArgumentNotValidException ex){
+
+        return ResponseEntity.badRequest().body("Input not valid\n" + BindErrorUtils.resolveAndJoin(ex.getFieldErrors()));
+    }
+
+    @ExceptionHandler(PlayerNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ResponseEntity<String> handleNotFoundException(EntityNotFoundException ex){
+    public ResponseEntity<String> handleNotFoundException(PlayerNotFoundException ex){
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No user found with this id");
+    }
+
+    @ExceptionHandler(NoGamesPlayedException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseEntity<String> handleNoGamesPlayedException(NoGamesPlayedException ex){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No games have been played yet");
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
@@ -43,6 +52,7 @@ public ResponseEntity<String> handleValidationException(MethodArgumentNotValidEx
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseEntity<String> handleGeneralException(Exception ex){
+        ex.printStackTrace();
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Something unexpected Went wrong\n" + ex.getMessage());
     }
 

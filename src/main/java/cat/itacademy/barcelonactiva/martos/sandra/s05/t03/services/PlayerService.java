@@ -12,10 +12,11 @@ public interface PlayerService {
     public void updatePlayer(Integer id, PlayerDTORequest playerDTORequest);
     public PlayerEntity getPlayer(Integer id);
     public List<PlayerEntity> getAllPlayers();
-    public GameDTO addGame(Integer idPlayer);
+    public GameDTO playGame(Integer idPlayer);
     public List<GameDTO> getAllGames(Integer idPlayer);
     public void deleteAllGames(Integer idPlayer);
     public List<PlayerDTO> getAllSuccessRate();
+    public double getAverageSuccessRate();
     public PlayerDTO getWinner();
     public PlayerDTO getLoser();
 }
