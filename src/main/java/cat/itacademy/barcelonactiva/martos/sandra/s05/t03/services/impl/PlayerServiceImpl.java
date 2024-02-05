@@ -128,24 +128,28 @@ public class PlayerServiceImpl implements PlayerService {
                 .filter(p-> p.getSuccessRate() != null)
                 .max(Comparator.comparing(PlayerDTO::getSuccessRate))
                 .orElseThrow(NoGamesPlayedException::new);
-    }
+
 
     @Override
     public PlayerDTO getLoser() {
         List<PlayerDTO> playerDTOList = getAllSuccessRate();
+        if(playerDTOList.stream().allMatch(p-> p.getSuccessRate() == null)){
+            throw new NoGamesPlayedException();
+        }
         return playerDTOList
                 .stream()
                 .filter(p-> p.getSuccessRate() != null)
                 .min(Comparator.comparing(PlayerDTO::getSuccessRate))
                 .orElseThrow(NoGamesPlayedException::new);
     }
-
-    private PlayerDTO playerToDTO(PlayerEntity playerEntity){
-        Double successRate = playerEntity.getSuccessRate();
+    @Override
+    public PlayerDTO playerToDTO(PlayerEntity playerEntity){
+        double successRate = gameService.getSuccessRate(playerEntity);
         return new PlayerDTO(playerEntity.getUsername(), successRate);
     }
 
-    private PlayerEntity playerDTOToEntity(PlayerDTORequest playerDTORequest){
+    @Override
+    public PlayerEntity playerDTOToEntity(PlayerDTORequest playerDTORequest){
         return new PlayerEntity(playerDTORequest.getUsername());
     }
 }
