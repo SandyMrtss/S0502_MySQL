@@ -9,7 +9,6 @@ import cat.itacademy.barcelonactiva.martos.sandra.s05.t03.model.dto.Request.Play
 import cat.itacademy.barcelonactiva.martos.sandra.s05.t03.repository.PlayerRepository;
 import cat.itacademy.barcelonactiva.martos.sandra.s05.t03.services.GameService;
 import cat.itacademy.barcelonactiva.martos.sandra.s05.t03.services.PlayerService;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -125,10 +124,10 @@ public class PlayerServiceImpl implements PlayerService {
         List<PlayerDTO> playerDTOList = getAllSuccessRate();
         return playerDTOList
                 .stream()
-                .filter(p-> p.getSuccessRate() != null)
+                .filter(p -> p.getSuccessRate() != null)
                 .max(Comparator.comparing(PlayerDTO::getSuccessRate))
                 .orElseThrow(NoGamesPlayedException::new);
-
+    }
 
     @Override
     public PlayerDTO getLoser() {
@@ -144,7 +143,7 @@ public class PlayerServiceImpl implements PlayerService {
     }
     @Override
     public PlayerDTO playerToDTO(PlayerEntity playerEntity){
-        double successRate = gameService.getSuccessRate(playerEntity);
+        double successRate = playerEntity.getSuccessRate();
         return new PlayerDTO(playerEntity.getUsername(), successRate);
     }
 

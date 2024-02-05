@@ -110,7 +110,7 @@ public class PlayerServiceImplTest {
         Mockito.when(playerRepository.findById(1)).thenReturn(Optional.ofNullable(playerWithUsername));
         Mockito.when(gameService.addGame(playerWithUsername)).thenReturn(newGameDTO);
 
-        GameDTO actual =  playerService.addGame(1);
+        GameDTO actual =  playerService.playGame(1);
 
         assertTrue(new ReflectionEquals(newGameDTO).matches(actual));
     }
