@@ -1,5 +1,7 @@
 package cat.itacademy.barcelonactiva.martos.sandra.s05.t03.services.impl;
 
+import cat.itacademy.barcelonactiva.martos.sandra.s05.t03.exceptions.NoGamesPlayedException;
+import cat.itacademy.barcelonactiva.martos.sandra.s05.t03.exceptions.PlayerNotFoundException;
 import cat.itacademy.barcelonactiva.martos.sandra.s05.t03.model.domain.PlayerEntity;
 import cat.itacademy.barcelonactiva.martos.sandra.s05.t03.model.dto.GameDTO;
 import cat.itacademy.barcelonactiva.martos.sandra.s05.t03.model.dto.PlayerDTO;
@@ -39,7 +41,7 @@ public class PlayerServiceImpl implements PlayerService {
     public PlayerEntity getPlayer(Integer id) {
         Optional<PlayerEntity> playerEntity = playerRepository.findById(id);
         if(playerEntity.isEmpty()){
-            throw new EntityNotFoundException();
+            throw new PlayerNotFoundException();
         }
         return playerEntity.get();
     }
@@ -79,17 +81,20 @@ public class PlayerServiceImpl implements PlayerService {
         List<PlayerDTO> playerDTOList = getAllSuccessRate();
         return playerDTOList
                 .stream()
-                .max(Comparator.comparing(PlayerDTO::getSuccessRate))
-                .orElseThrow(NoSuchElementException::new);
+                .filter(p-> p.getSuccessRate() != null)
+                .max(Comparator.comparing(PlayerDTO::getSuccessRate)).orElseThrow(NoGamesPlayedException::new);
     }
 
     @Override
     public PlayerDTO getLoser() {
         List<PlayerDTO> playerDTOList = getAllSuccessRate();
+        if(playerDTOList.stream().allMatch(p-> p.getSuccessRate() == null)){
+            throw new NoGamesPlayedException();
+        }
         return playerDTOList
                 .stream()
-                .min(Comparator.comparing(PlayerDTO::getSuccessRate))
-                .orElseThrow(NoSuchElementException::new);
+                .filter(p-> p.getSuccessRate() != null)
+                .min(Comparator.comparing(PlayerDTO::getSuccessRate)).orElseThrow(NoGamesPlayedException::new);
     }
 
     @Override

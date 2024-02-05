@@ -44,12 +44,8 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public double getSuccessRate(PlayerEntity playerEntity) {
-        Double success = gameRepository.calcAverageByPlayerEntity(playerEntity);
-        if(success == null){
-            return 0.0;
-        }
-        return success;
+    public Double getSuccessRate(PlayerEntity playerEntity) {
+        return gameRepository.calcAverageByPlayerEntity(playerEntity);
     }
 
     @Override
