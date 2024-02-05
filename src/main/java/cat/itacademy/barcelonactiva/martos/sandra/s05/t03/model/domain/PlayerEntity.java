@@ -2,6 +2,7 @@ package cat.itacademy.barcelonactiva.martos.sandra.s05.t03.model.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SourceType;
 
@@ -24,7 +25,10 @@ public class PlayerEntity {
     @CreationTimestamp(source = SourceType.DB)
     private Timestamp registerDate;
 
+    private Double successRate;
+
     public PlayerEntity(String username) {
         this.username = username;
+        this.successRate = null;
     }
 }

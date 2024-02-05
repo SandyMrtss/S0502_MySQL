@@ -40,13 +40,14 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public void deleteAllGames(PlayerEntity playerEntity) {
-        gameRepository.deleteByPlayerEntity(playerEntity);
+        List<GameEntity> allGames = gameRepository.findByPlayerEntity(playerEntity);
+        allGames.forEach(gameRepository::delete);
     }
-
     @Override
     public Double getSuccessRate(PlayerEntity playerEntity) {
         return gameRepository.calcAverageByPlayerEntity(playerEntity);
     }
+
 
     @Override
     public GameEntity gameDTOToEntity(PlayerEntity playerEntity, GameDTO gameDTO){
