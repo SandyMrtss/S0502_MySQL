@@ -143,7 +143,7 @@ public class PlayerServiceImpl implements PlayerService {
     }
     @Override
     public PlayerDTO playerToDTO(PlayerEntity playerEntity){
-        double successRate = playerEntity.getSuccessRate();
+        Double successRate = playerEntity.getSuccessRate();
         return new PlayerDTO(playerEntity.getUsername(), successRate);
     }
 

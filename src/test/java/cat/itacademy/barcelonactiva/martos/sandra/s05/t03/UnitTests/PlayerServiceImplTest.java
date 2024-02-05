@@ -1,5 +1,7 @@
 package cat.itacademy.barcelonactiva.martos.sandra.s05.t03.UnitTests;
 
+import cat.itacademy.barcelonactiva.martos.sandra.s05.t03.exceptions.NoGamesPlayedException;
+import cat.itacademy.barcelonactiva.martos.sandra.s05.t03.exceptions.PlayerNotFoundException;
 import cat.itacademy.barcelonactiva.martos.sandra.s05.t03.model.domain.PlayerEntity;
 import cat.itacademy.barcelonactiva.martos.sandra.s05.t03.model.dto.GameDTO;
 import cat.itacademy.barcelonactiva.martos.sandra.s05.t03.model.dto.PlayerDTO;
@@ -16,8 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 public class PlayerServiceImplTest {
@@ -49,6 +50,7 @@ public class PlayerServiceImplTest {
         usernameGamesDTO.add(new GameDTO(1,6));
         usernameGamesDTO.add(new GameDTO(4,2));
         usernameGamesDTO.add(new GameDTO(2,2));
+        playerWithUsername.setSuccessRate(25.0);
 
     }
 
@@ -92,6 +94,13 @@ public class PlayerServiceImplTest {
         assertTrue(new ReflectionEquals(playerWithUsername).matches(actual));
     }
     @Test
+    @DisplayName("Throws exception when player doesn't exist")
+    void testGetPlayerException(){
+        assertThrows(PlayerNotFoundException.class,  () -> {
+            playerService.getPlayer(50);
+        });
+    }
+    @Test
     @DisplayName("Gets anonymous correctly")
     void testGetAnonPlayer(){
         Mockito.when(playerRepository.findById(1)).thenReturn(Optional.ofNullable(playerAnonymous));
@@ -115,6 +124,32 @@ public class PlayerServiceImplTest {
         assertTrue(new ReflectionEquals(newGameDTO).matches(actual));
     }
 
+    @Test
+    @DisplayName("Updates success rate correctly (first game)")
+    void testUpdatesSuccessFirst(){
+        GameDTO newGameDTO = new GameDTO(1,6);
+
+        Mockito.when(playerRepository.findById(1)).thenReturn(Optional.ofNullable(playerAnonymous));
+        Mockito.when(gameService.addGame(playerAnonymous)).thenReturn(newGameDTO);
+
+        playerService.playGame(1);
+
+        assertEquals(100.0, playerAnonymous.getSuccessRate());
+    }
+    @Test
+    @DisplayName("Updates success rate correctly (following games)")
+    void testUpdatesSuccess(){
+        GameDTO newGameDTO = new GameDTO(5,6);
+        usernameGamesDTO.add(newGameDTO);
+
+        Mockito.when(playerRepository.findById(1)).thenReturn(Optional.ofNullable(playerWithUsername));
+        Mockito.when(gameService.addGame(playerWithUsername)).thenReturn(newGameDTO);
+        Mockito.when(gameService.getAllGames(playerWithUsername)).thenReturn(usernameGamesDTO);
+
+        playerService.playGame(1);
+
+        assertEquals(20.0, playerWithUsername.getSuccessRate());
+    }
     @Test
     @DisplayName("Gets all games correctly")
     void testGetsAllGames(){
@@ -154,17 +189,16 @@ public class PlayerServiceImplTest {
     @DisplayName("Gets all success rates' correctly")
     void testGetAllSuccessRate(){
         List<PlayerDTO> playerDTOList = new ArrayList<>();
-        playerDTOList.add(new PlayerDTO("sandy", 25.0));
-        playerDTOList.add(new PlayerDTO(null, 33.3));
+        playerDTOList.add(new PlayerDTO(playerWithUsername.getUsername(), playerWithUsername.getSuccessRate()));
+        playerDTOList.add(new PlayerDTO(playerAnonymous.getUsername(), playerAnonymous.getSuccessRate()));
 
         Mockito.when(playerRepository.findAll()).thenReturn(playerEntityList);
-        Mockito.when(gameService.getSuccessRate(playerWithUsername)).thenReturn(25.0);
-        Mockito.when(gameService.getSuccessRate(playerAnonymous)).thenReturn(33.3);
 
         List<PlayerDTO> actual = playerService.getAllSuccessRate();
 
         assertTrue(new ReflectionEquals(playerDTOList).matches(actual));
     }
+
     @Test
     @DisplayName("Gets winner correctly")
     void testGetWinner(){
@@ -172,17 +206,29 @@ public class PlayerServiceImplTest {
         PlayerEntity javi = new PlayerEntity("javi");
         playerEntityList.add(maya);
         playerEntityList.add(javi);
+        maya.setSuccessRate(50.0);
 
         Mockito.when(playerRepository.findAll()).thenReturn(playerEntityList);
-        Mockito.when(gameService.getSuccessRate(playerWithUsername)).thenReturn(25.0);
-        Mockito.when(gameService.getSuccessRate(playerAnonymous)).thenReturn(33.3);
-        Mockito.when(gameService.getSuccessRate(maya)).thenReturn(34.0);
-        Mockito.when(gameService.getSuccessRate(javi)).thenReturn(19.99);
 
         PlayerDTO expected = playerService.playerToDTO(maya);
         PlayerDTO winner = playerService.getWinner();
 
         assertTrue(new ReflectionEquals(expected).matches(winner));
+    }
+    @Test
+    @DisplayName("Throws exception when gets winner but no games played")
+    void testGetWinnerException(){
+        PlayerEntity maya = new PlayerEntity("maya");
+        PlayerEntity javi = new PlayerEntity("javi");
+        playerEntityList.remove(playerWithUsername);
+        playerEntityList.add(maya);
+        playerEntityList.add(javi);
+
+        Mockito.when(playerRepository.findAll()).thenReturn(playerEntityList);
+
+        assertThrows(NoGamesPlayedException.class, () ->{
+            playerService.getWinner();
+        });
     }
 
     @Test
@@ -192,17 +238,28 @@ public class PlayerServiceImplTest {
         PlayerEntity javi = new PlayerEntity("javi");
         playerEntityList.add(maya);
         playerEntityList.add(javi);
+        javi.setSuccessRate(10.0);
 
         Mockito.when(playerRepository.findAll()).thenReturn(playerEntityList);
-        Mockito.when(gameService.getSuccessRate(playerWithUsername)).thenReturn(25.0);
-        Mockito.when(gameService.getSuccessRate(playerAnonymous)).thenReturn(33.3);
-        Mockito.when(gameService.getSuccessRate(maya)).thenReturn(34.0);
-        Mockito.when(gameService.getSuccessRate(javi)).thenReturn(19.99);
 
         PlayerDTO expected = playerService.playerToDTO(javi);
         PlayerDTO loser = playerService.getLoser();
 
         assertTrue(new ReflectionEquals(expected).matches(loser));
     }
+    @Test
+    @DisplayName("Throws exception when gets loser but no games played")
+    void testGetLoserException(){
+        PlayerEntity maya = new PlayerEntity("maya");
+        PlayerEntity javi = new PlayerEntity("javi");
+        playerEntityList.remove(playerWithUsername);
+        playerEntityList.add(maya);
+        playerEntityList.add(javi);
 
+        Mockito.when(playerRepository.findAll()).thenReturn(playerEntityList);
+
+        assertThrows(NoGamesPlayedException.class, () ->{
+            playerService.getLoser();
+        });
+    }
 }
