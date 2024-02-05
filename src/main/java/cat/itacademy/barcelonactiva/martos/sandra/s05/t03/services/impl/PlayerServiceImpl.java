@@ -31,7 +31,7 @@ public class PlayerServiceImpl implements PlayerService {
     public void updatePlayer(Integer id, PlayerDTORequest playerDTORequest) {
         Optional<PlayerEntity> playerEntity = playerRepository.findById(id);
         if(playerEntity.isEmpty()){
-            throw new EntityNotFoundException();
+            throw new PlayerNotFoundException();
         }
         playerEntity.get().setUsername(playerDTORequest.getUsername());
         playerRepository.save(playerEntity.get());
@@ -47,9 +47,32 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
-    public GameDTO addGame(Integer idPlayer) {
+    public GameDTO playGame(Integer idPlayer) {
         PlayerEntity playerEntity = getPlayer(idPlayer);
-        return gameService.addGame(playerEntity);
+        GameDTO gameDTO = gameService.addGame(playerEntity);
+        updateSuccessRate(playerEntity, gameDTO);
+        return gameDTO;
+    }
+
+    private void updateSuccessRate(PlayerEntity playerEntity, GameDTO gameDTO){
+        Double successRate = playerEntity.getSuccessRate();
+        double isWinGame;
+        if(gameDTO.isWin()){
+            isWinGame = 1.0d;
+        }
+        else {
+            isWinGame = 0.0d;
+        }
+        if(successRate == null){
+            successRate = isWinGame*100;
+        }
+        else{
+            int gamesPlayed = gameService.getAllGames(playerEntity).size();
+            int gamesWin = (int) (Math.round(successRate/100*gamesPlayed));
+            successRate = (gamesWin + isWinGame)*100/(gamesPlayed);
+        }
+        playerEntity.setSuccessRate(successRate);
+        playerRepository.save(playerEntity);
     }
 
     @Override
@@ -62,18 +85,39 @@ public class PlayerServiceImpl implements PlayerService {
     public void deleteAllGames(Integer idPlayer) {
         PlayerEntity playerEntity = getPlayer(idPlayer);
         gameService.deleteAllGames(playerEntity);
+        playerEntity.setSuccessRate(null);
+        playerRepository.save(playerEntity);
     }
 
     @Override
     public List<PlayerEntity> getAllPlayers(){
         return playerRepository.findAll();
     }
+
     @Override
     public List<PlayerDTO> getAllSuccessRate() {
         List<PlayerEntity> playerEntityList = getAllPlayers();
         List<PlayerDTO> playerDTOList = new ArrayList<>();
-        playerEntityList.forEach(p-> playerDTOList.add(new PlayerDTO(p.getUsername(), gameService.getSuccessRate(p))));
+        playerEntityList.forEach(p-> {
+            Double success;
+            try{
+                success = p.getSuccessRate();
+            }
+            catch (NullPointerException ex){
+                success = null;
+            }
+            playerDTOList.add(new PlayerDTO(p.getUsername(), success));
+        });
         return playerDTOList;
+    }
+    @Override
+    public double getAverageSuccessRate(){
+        List<PlayerDTO> playerDTOList = getAllSuccessRate();
+        return playerDTOList
+                .stream()
+                .filter(p-> p.getSuccessRate() != null)
+                .mapToDouble(PlayerDTO::getSuccessRate).average()
+                .orElseThrow(NoGamesPlayedException::new);
     }
 
     @Override
@@ -82,8 +126,9 @@ public class PlayerServiceImpl implements PlayerService {
         return playerDTOList
                 .stream()
                 .filter(p-> p.getSuccessRate() != null)
-                .max(Comparator.comparing(PlayerDTO::getSuccessRate)).orElseThrow(NoGamesPlayedException::new);
-    }
+                .max(Comparator.comparing(PlayerDTO::getSuccessRate))
+                .orElseThrow(NoGamesPlayedException::new);
+
 
     @Override
     public PlayerDTO getLoser() {
@@ -94,9 +139,9 @@ public class PlayerServiceImpl implements PlayerService {
         return playerDTOList
                 .stream()
                 .filter(p-> p.getSuccessRate() != null)
-                .min(Comparator.comparing(PlayerDTO::getSuccessRate)).orElseThrow(NoGamesPlayedException::new);
+                .min(Comparator.comparing(PlayerDTO::getSuccessRate))
+                .orElseThrow(NoGamesPlayedException::new);
     }
-
     @Override
     public PlayerDTO playerToDTO(PlayerEntity playerEntity){
         double successRate = gameService.getSuccessRate(playerEntity);
