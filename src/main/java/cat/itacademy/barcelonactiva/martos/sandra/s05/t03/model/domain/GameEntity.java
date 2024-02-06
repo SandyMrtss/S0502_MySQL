@@ -14,7 +14,7 @@ import java.sql.Timestamp;
 @Table(name = "games")
 public class GameEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer gameId;
 
     @ManyToOne
