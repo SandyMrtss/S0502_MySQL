@@ -7,9 +7,9 @@ import cat.itacademy.barcelonactiva.martos.sandra.s05.t03.model.dto.GameDTO;
 import java.util.List;
 
 public interface GameService {
-    public GameDTO addGame(PlayerEntity playerEntity);
-    public List<GameDTO> getAllGames(PlayerEntity playerEntity);
-    public void deleteAllGames(PlayerEntity playerEntity);
-    public GameEntity gameDTOToEntity(PlayerEntity playerEntity, GameDTO gameDTO);
-    public GameDTO gameEntityToDTO(GameEntity gameEntity);
+    GameDTO addGame(PlayerEntity playerEntity);
+    List<GameDTO> getAllGames(PlayerEntity playerEntity);
+    void deleteAllGames(PlayerEntity playerEntity);
+    GameEntity gameDTOToEntity(PlayerEntity playerEntity, GameDTO gameDTO);
+    GameDTO gameEntityToDTO(GameEntity gameEntity);
 }

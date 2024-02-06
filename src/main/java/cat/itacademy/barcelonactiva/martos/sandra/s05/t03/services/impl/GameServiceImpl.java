@@ -13,7 +13,7 @@ import java.util.List;
 
 @Service
 public class GameServiceImpl implements GameService {
-    GameRepository gameRepository;
+    private GameRepository gameRepository;
 
     public GameServiceImpl(GameRepository gameRepository){
         this.gameRepository = gameRepository;

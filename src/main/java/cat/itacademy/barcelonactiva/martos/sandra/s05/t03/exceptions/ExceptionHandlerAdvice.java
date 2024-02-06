@@ -32,6 +32,7 @@ public class ExceptionHandlerAdvice {
     public ResponseEntity<String> handleNoGamesPlayedException(NoGamesPlayedException ex){
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
+
     @ExceptionHandler(DataIntegrityViolationException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     public ResponseEntity<String> handlePrimaryKeyViolation(DataIntegrityViolationException ex){
@@ -49,11 +50,13 @@ public class ExceptionHandlerAdvice {
     public ResponseEntity<String> handleInvalidInput(HttpMessageConversionException ex){
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Input data format not supported");
     }
+
     @ExceptionHandler(NoResourceFoundException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseEntity<String> handleNoResource(NoResourceFoundException ex){
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("This link doesn't go anywhere" + ex.getMessage());
     }
+
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseEntity<String> handleGeneralException(Exception ex){
