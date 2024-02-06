@@ -2,7 +2,6 @@ package cat.itacademy.barcelonactiva.martos.sandra.s05.t03.model.dto;
 
 import lombok.*;
 
-import java.util.List;
 import java.util.Objects;
 
 @Getter

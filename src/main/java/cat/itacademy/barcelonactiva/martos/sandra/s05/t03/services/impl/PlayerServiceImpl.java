@@ -2,6 +2,7 @@ package cat.itacademy.barcelonactiva.martos.sandra.s05.t03.services.impl;
 
 import cat.itacademy.barcelonactiva.martos.sandra.s05.t03.exceptions.NoGamesPlayedException;
 import cat.itacademy.barcelonactiva.martos.sandra.s05.t03.exceptions.PlayerNotFoundException;
+import cat.itacademy.barcelonactiva.martos.sandra.s05.t03.exceptions.UsernameAlreadyUsedException;
 import cat.itacademy.barcelonactiva.martos.sandra.s05.t03.model.domain.PlayerEntity;
 import cat.itacademy.barcelonactiva.martos.sandra.s05.t03.model.dto.GameDTO;
 import cat.itacademy.barcelonactiva.martos.sandra.s05.t03.model.dto.PlayerDTO;
@@ -28,12 +29,15 @@ public class PlayerServiceImpl implements PlayerService {
 
     @Override
     public void updatePlayer(Integer id, PlayerDTORequest playerDTORequest) {
-        Optional<PlayerEntity> playerEntity = playerRepository.findById(id);
-        if(playerEntity.isEmpty()){
-            throw new PlayerNotFoundException();
+        PlayerEntity playerEntity = getPlayer(id);
+        PlayerEntity playerEntityExisting = playerRepository.findByUsername(playerDTORequest.getUsername());
+        if(playerEntityExisting != null){
+            if(playerEntityExisting.getId() != playerEntity.getId()){
+                throw new UsernameAlreadyUsedException();
+            }
         }
-        playerEntity.get().setUsername(playerDTORequest.getUsername());
-        playerRepository.save(playerEntity.get());
+        playerEntity.setUsername(playerDTORequest.getUsername());
+        playerRepository.save(playerEntity);
     }
 
     @Override
