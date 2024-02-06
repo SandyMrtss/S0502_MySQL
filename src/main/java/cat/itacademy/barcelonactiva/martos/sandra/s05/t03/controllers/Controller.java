@@ -14,7 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/diceGame/v1/players")
 public class Controller {
-    private PlayerService playerService;
+    private final PlayerService playerService;
 
     public Controller(PlayerService playerService){
         this.playerService = playerService;
@@ -25,6 +25,7 @@ public class Controller {
         playerService.addPlayer(playerDTORequest);
         return new ResponseEntity<>("Player added successfully", HttpStatus.CREATED);
     }
+
     @GetMapping("")
     public ResponseEntity<List<PlayerDTO>> getAllSuccessRate(){
         List<PlayerDTO> playerDTOList = playerService.getAllSuccessRate();

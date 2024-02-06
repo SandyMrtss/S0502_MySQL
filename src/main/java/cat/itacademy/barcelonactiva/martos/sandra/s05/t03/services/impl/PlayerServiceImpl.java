@@ -16,8 +16,8 @@ import java.util.*;
 
 @Service
 public class PlayerServiceImpl implements PlayerService {
-    PlayerRepository playerRepository;
-    GameService gameService;
+    private PlayerRepository playerRepository;
+    private GameService gameService;
     public PlayerServiceImpl(PlayerRepository playerRepository, GameService gameService){
         this.playerRepository = playerRepository;
         this.gameService = gameService;
@@ -113,6 +113,7 @@ public class PlayerServiceImpl implements PlayerService {
         });
         return playerDTOList;
     }
+
     @Override
     public double getAverageSuccessRate(){
         List<PlayerDTO> playerDTOList = getAllSuccessRate();
@@ -136,15 +137,13 @@ public class PlayerServiceImpl implements PlayerService {
     @Override
     public PlayerDTO getLoser() {
         List<PlayerDTO> playerDTOList = getAllSuccessRate();
-        if(playerDTOList.stream().allMatch(p-> p.getSuccessRate() == null)){
-            throw new NoGamesPlayedException();
-        }
         return playerDTOList
                 .stream()
                 .filter(p-> p.getSuccessRate() != null)
                 .min(Comparator.comparing(PlayerDTO::getSuccessRate))
                 .orElseThrow(NoGamesPlayedException::new);
     }
+
     @Override
     public PlayerDTO playerToDTO(PlayerEntity playerEntity){
         Double successRate = playerEntity.getSuccessRate();
