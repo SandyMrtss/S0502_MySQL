@@ -55,7 +55,6 @@ public class PlayerServiceImplTest {
 
     }
 
-
     @Test
     @DisplayName("Adds player correctly")
     void testAddsPlayer(){
@@ -85,6 +84,7 @@ public class PlayerServiceImplTest {
         PlayerDTO playerDTO = playerService.playerToDTO(playerService.getPlayer(1));
         assertEquals("ANONYMOUS", playerDTO.getUsername());
     }
+
     @Test
     @DisplayName("Gets player correctly")
     void testGetPlayer(){
@@ -94,6 +94,7 @@ public class PlayerServiceImplTest {
 
         assertTrue(new ReflectionEquals(playerWithUsername).matches(actual));
     }
+
     @Test
     @DisplayName("Throws exception when player doesn't exist")
     void testGetPlayerException(){
@@ -101,6 +102,7 @@ public class PlayerServiceImplTest {
             playerService.getPlayer(50);
         });
     }
+
     @Test
     @DisplayName("Gets anonymous correctly")
     void testGetAnonPlayer(){
