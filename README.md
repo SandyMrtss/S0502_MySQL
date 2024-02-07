@@ -1,6 +1,6 @@
 # ITAcademy JAVA DiceGame Project
 
-The following RestAPI was developed as part of the Java programming bootcamp at ITAcademy Barcelona.
+The following RestAPI was developed as part of the Java programming boot camp at ITAcademy Barcelona.
 
 It's a simple Dice Game where two randomly obtained dice must sum 7 to win.
 
@@ -31,7 +31,7 @@ git clone https://github.com/SandyMrtss/S0502_MySQL.git
 <br><br>
 To execute the program, use a Java IDE (I used IntelliJ IDE) and execute <strong>S05T03MartosSandraApplication</strong> class.
 <br><br>
-Can also be done from the command line as you would with any maven project. 
+It can also be done from the command line as you would with any Maven project. 
 ### 2.2. Data Persistence <a name="persist"></a>
 Before starting, you must create your database and make sure application.properties matches your local settings. 
 - You don't have to create tables for the API, they will be automatically created when the API runs for the first time.
@@ -54,7 +54,7 @@ springdoc.swagger-ui.operationsSorter=method
 ```
 ## 3. Functionality <a name="func"></a>
 This API supports the following requests:
-- Adds new player. Doesn't allow duplicated usernames but accepts no username (will be anonymous player)
+- Adds new player. It doesn't allow duplicated usernames but accepts no username (will be an anonymous player)
 ```
 curl --location --request POST 'http://localhost:9000/diceGame/v1/players' \
 --header 'Content-Type: application/json' \
@@ -62,7 +62,7 @@ curl --location --request POST 'http://localhost:9000/diceGame/v1/players' \
     "username":"newUserName"
 }'
 ```
-- Updates players username
+- Updates player's username
 ```
 curl --location --request PUT 'http://localhost:9000/diceGame/v1/players/1' \
 --header 'Content-Type: application/json' \
@@ -70,7 +70,7 @@ curl --location --request PUT 'http://localhost:9000/diceGame/v1/players/1' \
     "username":"updatedUsername"
 }'
 ```
-- A specific user plays new game
+- A specific user plays a new game
 ```
 curl --location --request POST 'http://localhost:9000/diceGame/v1/players/1/games'
 ```
@@ -91,7 +91,7 @@ curl --location --request GET 'http://localhost:9000/diceGame/v1/players/1/games
 ```
 curl --location --request GET 'http://localhost:9000/diceGame/v1/players/ranking'
 ```
-- Returns the user with the worse success rate
+- Returns the user with the worst success rate
 ```
 curl --location --request GET 'http://localhost:9000/diceGame/v1/players/ranking/loser'
 ```
@@ -121,7 +121,7 @@ spring.jpa.defer-datasource-initialization=true
 ```
 ## 5. Built with <a name="built"></a>
 - [Maven](https://maven.apache.org/) - Dependency manager
-- [Spring Security](https://spring.io/projects/spring-security/) - Para automatizar el control de acceso (autenticación y autorización) y sesión de una aplicación
+- [Spring Security](https://spring.io/projects/spring-security/) - Authentication and authorization 
 - [MySQL Database](https://www.mysql.com/) - Persistence
 - [Junit](https://junit.org/junit5/) - Testing
 - [Mockito](https://site.mockito.org/) - Mocks for unit testing 
