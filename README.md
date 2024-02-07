@@ -27,7 +27,7 @@ Clone the repository to your local machine:
 ```git
 git clone https://github.com/SandyMrtss/S0502_MySQL.git
 ```
-*Before executing the program, please read  [**2.2. Data persistence**](#DataPersistence).*
+*Before executing the program, please read  [**2.2. Data persistence**](#persist).*
 <br><br>
 To execute the program, use a Java IDE (I used IntelliJ IDE) and execute <strong>S05T03MartosSandraApplication</strong> class.
 <br><br>
