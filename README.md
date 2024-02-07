@@ -1,8 +1,17 @@
-# Dice Game Project
+# ITAcademy JAVA DiceGame Project
 
 The following RestAPI was developed as part of the Java programming bootcamp at ITAcademy Barcelona.
-<br><br>It's a simple Dice Game where two randomnly obtained dices must sum 7 in order to win.
-<br><br>This API uses MySQL for persistence. On S0502_MultiDB you can find the same API using a combination of MongoDB and MySQL for persistence.
+
+It's a simple Dice Game where two randomly obtained dice must sum 7 to win.
+
+This API uses MySQL for persistence. On [S0502_MultiDB](https://github.com/SandyMrtss/S0502_MultiDB) you can find the same API using a combination of MongoDB and MySQL for persistence.
+
+
+## Installation
+Start API
+```bash
+mvn clean spring-boot:run
+```
 
 ## Table Of Contents
 1. [Requirements](#req)
