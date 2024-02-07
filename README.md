@@ -17,12 +17,12 @@ This API uses MySQL for persistence. On [S0502_MultiDB](https://github.com/Sandy
 5. [Built with](#built)
 6. [Author](#author)
 
-## 1. Requirements <a name="#req"></a>
+## 1. Requirements <a name="req"></a>
 - Java Development Kit (JDK) 8 or higher
 - MySQL database and JDBC Driver for persistence
 - Postman or similar to manage requests.
-## 2. Configuration <a name="#conf"></a>
-### 2.1. Installation <a name="#installation"></a>
+## 2. Configuration <a name="conf"></a>
+### 2.1. Installation <a name="installation"></a>
 Clone the repository to your local machine:
 ```git
 git clone https://github.com/SandyMrtss/S0502_MySQL.git
@@ -32,10 +32,10 @@ git clone https://github.com/SandyMrtss/S0502_MySQL.git
 To execute the program, use a Java IDE (I used IntelliJ IDE) and execute <strong>S05T03MartosSandraApplication</strong> class.
 <br><br>
 Can also be done from the command line as you would with any maven project. 
-### 2.2. Data Persistence <a name="#persist"></a>
+### 2.2. Data Persistence <a name="persist"></a>
 Before starting, you must create your database and make sure application.properties matches your local settings. 
 - You don't have to create tables for the API, they will be automatically created when the API runs for the first time.
-### 2.3. Default Properties <a name="#prop"></a>
+### 2.3. Default Properties <a name="prop"></a>
 Please ensure your properties file follows this pattern:
 ```properties
 server.port=9000
@@ -52,7 +52,7 @@ spring.jpa.hibernate.ddl-auto=update
 springdoc.api-docs.path=/flor/v1/api-docs
 springdoc.swagger-ui.operationsSorter=method
 ```
-## 3. Functionality <a name="#func"></a>
+## 3. Functionality <a name="func"></a>
 This API supports the following requests:
 - Adds new player. Doesn't allow duplicated usernames but accepts no username (will be anonymous player)
 ```
@@ -100,7 +100,7 @@ curl --location --request GET 'http://localhost:9000/diceGame/v1/players/ranking
 curl --location --request GET 'http://localhost:9000/diceGame/v1/players/ranking/winner'
 ```
 
-## 4. Testing <a name="#testing"></a>
+## 4. Testing <a name="testing"></a>
 There are unit tests for the service implementations that use Mockito to replicate database persistence.
 <br><br>
 For integration tests, you must create a new database that will delete, create and populate tables on startup.
@@ -119,7 +119,7 @@ spring.jpa.hibernate.ddl-auto=create-drop
 spring.sql.init.mode=always
 spring.jpa.defer-datasource-initialization=true
 ```
-## 5. Built with <a name="#built"></a>
+## 5. Built with <a name="built"></a>
 - [Maven](https://maven.apache.org/) - Dependency manager
 - [Spring Security](https://spring.io/projects/spring-security/) - Para automatizar el control de acceso (autenticación y autorización) y sesión de una aplicación
 - [MySQL Database](https://www.mysql.com/) - Persistence
@@ -127,6 +127,6 @@ spring.jpa.defer-datasource-initialization=true
 - [Mockito](https://site.mockito.org/) - Mocks for unit testing 
 - [Swagger](https://swagger.io/) - Documentation
 
-## 6. Author <a name="#author"></a>
+## 6. Author <a name="author"></a>
 This project was developed by:
 [@SandyMrtss](https://github.com/SandyMrtss)
