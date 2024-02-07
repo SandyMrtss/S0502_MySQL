@@ -4,7 +4,7 @@ The following RestAPI was developed as part of the Java programming bootcamp at 
 
 It's a simple Dice Game where two randomly obtained dice must sum 7 to win.
 
-This API uses MySQL for persistence. On [S0502_MultiDB](https://github.com/SandyMrtss/S502_MultiDB) you can find the same API using a combination of MongoDB and MySQL for persistence.
+This API uses MySQL for persistence. On [S502_MultiDB](https://github.com/SandyMrtss/S502_MultiDB) you can find the same API using a combination of MongoDB and MySQL for persistence.
 
 ## Table Of Contents
 1. [Requirements](#req)
