@@ -1,7 +1,7 @@
 package cat.itacademy.barcelonactiva.martos.sandra.s05.t03.controllers;
 
 import cat.itacademy.barcelonactiva.martos.sandra.s05.t03.model.dto.*;
-import cat.itacademy.barcelonactiva.martos.sandra.s05.t03.model.dto.Request.PlayerDTORequest;
+import cat.itacademy.barcelonactiva.martos.sandra.s05.t03.model.dto.request.PlayerDTORequest;
 import cat.itacademy.barcelonactiva.martos.sandra.s05.t03.services.*;
 
 import org.springframework.http.HttpStatus;
@@ -12,11 +12,11 @@ import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:9000")
 @RestController
-@RequestMapping("/diceGame/v1/players")
-public class Controller {
+@RequestMapping("/api/v1/diceGame/players")
+public class DiceGameController {
     private final PlayerService playerService;
 
-    public Controller(PlayerService playerService){
+    public DiceGameController(PlayerService playerService){
         this.playerService = playerService;
     }
 
