@@ -18,7 +18,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-import static io.jsonwebtoken.Jwts.ENC.get;
 
 @Service
 public class JwtServiceImpl implements JwtService {
@@ -46,11 +45,10 @@ public class JwtServiceImpl implements JwtService {
     }
 
     private String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
-        return Jwts.builder().claims(extraClaims).subject(userDetails.getUsername())
-                .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))
-                .encodePayload(true).encryptWith(getSigningKey(), get().forKey("A128CBC-HS256"))
-                .compact();
+        return Jwts.builder().setClaims(extraClaims).setSubject(userDetails.getUsername())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24 * 30))
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256).compact();
     }
     private boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
